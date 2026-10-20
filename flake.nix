@@ -26,7 +26,7 @@
         default = {
           type = "app";
           program = "${self.packages.${system}.default}/bin/a";
-          meta.description = self.description;
+          meta.description = "A random English word containing an interior ass";
         };
       });
     };
