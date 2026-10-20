@@ -14,12 +14,14 @@
           pkgs = nixpkgs.legacyPackages.${system};
         in
         {
-          default = pkgs.writeShellScriptBin "a" (
-            builtins.replaceStrings
-              [ "nix run nixpkgs#xkcdpass --" ]
-              [ "exec ${pkgs.xkcdpass}/bin/xkcdpass" ]
-              (builtins.readFile ./main.sh)
-          );
+          default = pkgs.writeShellApplication {
+            name = "a";
+            runtimeInputs = [ pkgs.gawk pkgs.coreutils ];
+            text = builtins.replaceStrings
+              [ "$(nix build --no-link --print-out-paths nixpkgs#python3Packages.cmudict)" ]
+              [ "${pkgs.python3Packages.cmudict}" ]
+              (builtins.readFile ./main.sh);
+          };
         });
 
       apps = forAllSystems (system: {
